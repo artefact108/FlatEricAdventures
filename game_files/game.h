@@ -6,7 +6,7 @@
 #include <iostream>
 
 class Game {
-  friend class Character;
+  friend class Eric;
   friend class OverView;
 
 private:
@@ -27,7 +27,7 @@ public:
     background_sprite.setPosition(0, 0);
   }
 
-  void GameRun(Character &pers) {
+  void GameRun(Eric &pers) {
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Flat Eric Adventures",
                             sf::Style::Titlebar | sf::Style::Close);
     camera.overview.reset(sf::FloatRect(0, 0, 1280, 720));

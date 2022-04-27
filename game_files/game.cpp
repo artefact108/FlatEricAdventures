@@ -3,6 +3,6 @@
 
 int main() {
   Game game("background.jpg");
-  Character Eric("flat_eric_main.png");
+  Eric Eric("flat_eric_main.png");
   game.GameRun(Eric);
 }
