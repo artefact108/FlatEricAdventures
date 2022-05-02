@@ -19,7 +19,7 @@ private:
 
 public:
   Game(const std::string &filename) : background_image_file(filename) {
-    background.loadFromFile("background.jpg");
+    background.loadFromFile("src/background.jpg");
     background_texture.loadFromImage(background);
     background_texture.setRepeated(true);
 
@@ -32,14 +32,15 @@ public:
                             sf::Style::Titlebar | sf::Style::Close);
     camera.overview.reset(sf::FloatRect(0, 0, 1280, 720));
     sf::Shader background_shader;
-    background_shader.loadFromFile("background.cpp", sf::Shader::Vertex);
+    background_shader.loadFromFile("include/background.cpp",
+                                   sf::Shader::Vertex);
     sf::Music song_for_the_game;
-    song_for_the_game.openFromFile("song1.ogg");
+    song_for_the_game.openFromFile("msc/song1.ogg");
     song_for_the_game.setVolume(50.f);
     song_for_the_game.play();
     song_for_the_game.setLoop(true);
 
-    float offset = 0.f;
+    float offset = 1.f;
 
     while (window.isOpen()) {
 
@@ -59,13 +60,16 @@ public:
         pers.directory = "R";
         pers.speed = 0.05;
         camera.follow_point(pers.coord.first, pers.coord.second);
-        background_shader.setUniform(
-            "offset", offset += clock.restart().asSeconds() * 1.005);
+        // background_shader.setUniform(
+        //    "offset", offset += clock.restart().asSeconds() * 1.005);
       }
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         pers.directory = "U";
-        pers.speed = 1;
+        if (pers.coord.second >= 0) {
+          pers.character_sprite.move(0, -0.3);
+          pers.coord.second -= 0.3;
+        }
         camera.follow_point(pers.coord.first, pers.coord.second);
         // background_shader.setUniform(
         //    "offset", offset += clock.restart().asSeconds() / 10);
@@ -78,7 +82,15 @@ public:
         // background_shader.setUniform(
         //    "offset", offset += clock.restart().asSeconds() / 10);
       }
-      pers.update(current_time);
+
+      if (pers.coord.second < 420) {
+        pers.character_sprite.move(0, 0.1);
+        pers.coord.second += 0.1;
+      }
+      background_shader.setUniform(
+          "offset", offset += clock.restart().asSeconds() * 1.005);
+
+      // pers.update(current_time);
       window.setView(camera.overview);
       window.clear();
       window.draw(background_sprite, &background_shader);

@@ -1,8 +1,8 @@
-#include "game.h"
+#include "include/game.h"
 #include <iostream>
 
 int main() {
-  Game game("background.jpg");
-  Eric Eric("flat_eric_main.png");
+  Game game("src/background.jpg");
+  Eric Eric("src/flat_eric_main.png");
   game.GameRun(Eric);
 }
