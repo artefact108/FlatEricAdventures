@@ -59,7 +59,7 @@ public:
     character_texture.loadFromFile(image_file);
     character_sprite.setTexture(character_texture);
     character_sprite.setPosition(coord.first, coord.second);
-    character_sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
+    // character_sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
   }
 
   void update(const int &time) {
@@ -89,12 +89,35 @@ public:
 };
 
 class Policeman : Character {
+  friend class Game;
+  friend class Character;
+  friend void delete_characters_from_window(std::vector<Policeman> &);
+
 private:
-  std::pair<double, double> coord = {20, 450};
+  std::pair<double, double> coord = {1000, 400};
+  std::string image_file;
 
 public:
-  void update(const int &time) {
-
+  Policeman(const std::string &filename) : image_file(filename) {
+    character_image.loadFromFile(image_file);
+    character_texture.loadFromFile(image_file);
+    character_sprite.setTexture(character_texture);
     character_sprite.setPosition(coord.first, coord.second);
+    // character_sprite.setTextureRect(sf::IntRect(0, 0, 250, 286));
+  }
+
+  void move() {
+    coord.first -= 0.3;
+    character_sprite.move(-0.3, 0);
+  }
+
+  bool collision(std::pair<double, double> coord1,
+                 std::pair<double, double> coord2) {
+    std::pair<double, double> coord_ = {coord.first, coord.second + 200};
+    return (std::abs(coord1.first - coord.first) <= 20 &&
+            (((coord.second - coord1.second) <= 0 &&
+              (coord1.second - coord_.second) <= 0) ||
+             (0 <= (coord2.second - coord.second) &&
+              (coord2.second - coord_.second) <= 0)));
   }
 };
